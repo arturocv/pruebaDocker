@@ -1,34 +1,24 @@
 # ---------- BUILD ----------
 FROM node:20-alpine AS build
-WORKDIR /app
 
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 RUN npm run build
 
-# ---------- SERVE ----------
+# ---------- NGINX ----------
 FROM nginx:alpine
 
-# Limpiar contenido por defecto
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copiar el build real de Angular (nivel browser)
-# IMPORTANTE: la barra final es clave
-COPY --from=build /app/dist/angulartest/browser/ /usr/share/nginx/html/
-
-# Configuración Nginx SPA
+# borrar config por defecto
 RUN rm /etc/nginx/conf.d/default.conf
-RUN echo 'server { \
-  listen 80; \
-  server_name _; \
-  root /usr/share/nginx/html; \
-  index index.html; \
-  location / { \
-  try_files $uri $uri/ /index.html; \
-  } \
-  }' > /etc/nginx/conf.d/default.conf
+
+# copiar nuestra config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# copiar el build REAL de angular
+COPY --from=build /app/dist/angulartest/browser /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
