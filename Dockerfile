@@ -2,22 +2,21 @@
 FROM node:20-alpine AS build
 
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm install
 
 COPY . .
-RUN npm run build
+RUN npm run build -- --configuration production
 
 # ---------- NGINX ----------
 FROM nginx:alpine
 
-# borrar config por defecto
 RUN rm /etc/nginx/conf.d/default.conf
 
-# copiar nuestra config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# copiar el build REAL de angular
+# 🔥 ESTA LÍNEA ES LA CLAVE
 COPY --from=build /app/dist/angulartest/browser /usr/share/nginx/html
 
 EXPOSE 80
