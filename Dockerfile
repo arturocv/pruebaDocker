@@ -14,10 +14,11 @@ FROM nginx:alpine
 # Limpiar contenido por defecto
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copiar el build REAL de Angular (nivel browser)
-COPY --from=build /app/dist/*/browser/ /usr/share/nginx/html/
+# Copiar el build real de Angular (nivel browser)
+# IMPORTANTE: la barra final es clave
+COPY --from=build /app/dist/angulartest/browser/ /usr/share/nginx/html/
 
-# Configuración Nginx para SPA
+# Configuración Nginx SPA
 RUN rm /etc/nginx/conf.d/default.conf
 RUN echo 'server { \
   listen 80; \
