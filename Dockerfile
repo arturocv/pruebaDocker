@@ -10,16 +10,23 @@ RUN npm run build
 
 # ---------- SERVE ----------
 FROM nginx:alpine
-COPY --from=build /app/dist/* /usr/share/nginx/html
 
-# Configuración SPA
+# BORRAR contenido por defecto de nginx
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copiar TODO el dist (sin asumir estructura)
+COPY --from=build /app/dist /usr/share/nginx/html/dist
+
+# Configuración nginx SPA
 RUN rm /etc/nginx/conf.d/default.conf
 RUN echo 'server { \
   listen 80; \
   server_name _; \
-  root /usr/share/nginx/html; \
+  root /usr/share/nginx/html/dist; \
   index index.html; \
-  location / { try_files $uri $uri/ /index.html; } \
+  location / { \
+  try_files $uri $uri/ /index.html; \
+  } \
   }' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
