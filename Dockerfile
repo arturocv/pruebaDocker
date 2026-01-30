@@ -11,18 +11,18 @@ RUN npm run build
 # ---------- SERVE ----------
 FROM nginx:alpine
 
-# BORRAR contenido por defecto de nginx
+# Limpiar html por defecto
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copiar TODO el dist (sin asumir estructura)
-COPY --from=build /app/dist /usr/share/nginx/html/dist
+# Copiar SOLO el contenido real de Angular
+COPY --from=build /app/dist/*/browser /usr/share/nginx/html/
 
-# Configuración nginx SPA
+# Configuración SPA
 RUN rm /etc/nginx/conf.d/default.conf
 RUN echo 'server { \
   listen 80; \
   server_name _; \
-  root /usr/share/nginx/html/dist; \
+  root /usr/share/nginx/html; \
   index index.html; \
   location / { \
   try_files $uri $uri/ /index.html; \
