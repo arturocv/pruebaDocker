@@ -11,13 +11,13 @@ RUN npm run build
 # ---------- SERVE ----------
 FROM nginx:alpine
 
-# Limpiar html por defecto
+# Limpiar contenido por defecto
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copiar SOLO el contenido real de Angular
-COPY --from=build /app/dist/*/browser /usr/share/nginx/html/
+# Copiar el build REAL de Angular (nivel browser)
+COPY --from=build /app/dist/*/browser/ /usr/share/nginx/html/
 
-# Configuración SPA
+# Configuración Nginx para SPA
 RUN rm /etc/nginx/conf.d/default.conf
 RUN echo 'server { \
   listen 80; \
