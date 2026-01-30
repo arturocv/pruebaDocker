@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dockertest": {
+    "angulartest": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/dockertest",
+            "outputPath": "dist/angulartest",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "dockertest:build:production"
+              "buildTarget": "angulartest:build:production"
             },
             "development": {
-              "buildTarget": "dockertest:build:development"
+              "buildTarget": "angulartest:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -1,12 +1,12 @@
 {
-  "name": "dockertest",
+  "name": "angulartest",
   "version": "0.0.0",
   "scripts": {
+    "ng": "ng",
     "build": "ng build",
-    "start": "node dist/dockertest/server/server.mjs",
+    "start": "node dist/angulartest/server/server.mjs",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "ng": "ng"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
